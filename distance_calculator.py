@@ -1,3 +1,4 @@
+import math
 import cv2
 import numpy as np
 import threading
@@ -83,6 +84,7 @@ def getDistance(img, imgContour):
                 global d
                 d = np.sqrt(((p[0] - p[2]) ** 2) + ((p[1] - p[3]) ** 2))
                 speed = d/5
+                angle = math.atan2(p[1] - p[3], p[0] - p[2]) * 180/math.pi
                 p.clear()
                 print(d)
                 f1 = open("distance.txt", "a")
@@ -92,12 +94,16 @@ def getDistance(img, imgContour):
                 f2 = open("speed.txt", "a")
                 f2.write("speed : {} \n".format(speed))
                 f2.close()
+
+                f3 = open("angle.txt", "a")
+                f3.write("Angle : {} \n".format(angle))
+                f3.close()
                 s.append(speed)
                 if len(s) == 2:
                     acceleration = (s[1] - s[0]) / 10
-                    f3 = open("acceleration.txt", "a")
-                    f3.write("acceleration : {} \n".format(acceleration))
-                    f3.close()
+                    f4 = open("acceleration.txt", "a")
+                    f4.write("acceleration : {} \n".format(acceleration))
+                    f4.close()
                     s.clear()
 
                 cv2.putText(imgContour, "{}".format(int(d)), (100, 100),
